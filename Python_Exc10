@@ -1,0 +1,122 @@
+import numpy as np
+
+###############################################################
+# do not delete or change load_luna_park_data_to_lists function
+###############################################################
+def load_luna_park_data_to_lists(csv_file):
+    with open(csv_file) as f: # "with" statement handles file opening and closing
+        rides_list = f.readline().rstrip().split(',')[1:]
+        data_table, names_list = [], []
+        for line in f:
+            line_tokens = line.rstrip().split(',')
+            name = line_tokens[0]
+            names_list.append(name)
+            data_table.append([int(count) for count in line_tokens[1:]])  # add next table row
+    return rides_list, names_list, data_table
+
+
+#########################################
+# Question 1 - do not delete this comment
+#########################################
+def load_luna_park_data_to_arrays(csv_file):
+    rides_list, names_list, data_table = load_luna_park_data_to_lists(csv_file)
+    return np.array(rides_list), np.array(names_list), np.array(data_table)
+
+
+#########################################
+# Question 2 - do not delete this comment
+#########################################
+def max_use(data):
+    return np.max(data)
+
+
+#########################################
+# Question 3 - do not delete this comment
+#########################################
+def average_use_per_kid(data):
+    return np.mean(data, axis=1)
+
+
+#########################################
+# Question 4 - do not delete this comment
+#########################################
+def usage_variance_per_ride(data):
+    return np.var(data, axis=0)
+
+
+#########################################
+# Question 5 - do not delete this comment
+#########################################
+def no_use(data):
+    return np.any(np.sum(data, axis=0) == 0)
+
+
+#########################################
+# Question 6 - do not delete this comment
+#########################################
+def more_than_25(data):
+    return np.sum(np.sum(data, axis=0) > 25)
+
+
+#########################################
+# Question 7 - do not delete this comment
+#########################################
+def heavy_user(data, names):
+    return names[np.argmax(np.sum(data, axis=1))]
+
+
+#########################################
+# Question 8 - do not delete this comment
+#########################################
+def least_popular_ride(data, rides):
+    return rides[np.argmin(np.sum(data, axis=0))]
+
+
+#########################################
+# Question 9 - do not delete this comment
+#########################################
+def fix_last_kid(data):
+    data[-1, :] = 5
+    return data
+
+
+#########################################
+# Question 10 - do not delete this comment
+#########################################
+def fix_wrong_minus(data):
+    mask = data == -1
+    data[mask] = 1
+    return data
+
+
+#########################################
+# Question 11 - do not delete this comment
+#########################################
+def bad_luck_rides(data,rides):
+    mask = np.sum(data, axis=0) % 11 == 0
+    return rides[mask]
+
+
+#########################################
+# Question 12 - do not delete this comment
+#########################################
+def sort_users_descending(data, names):
+    permutation = np.argsort(np.sum(data, axis=1))
+    return names[permutation][::-1]
+
+
+rides, names, data = load_luna_park_data_to_arrays('luna_park.csv')
+print(rides)
+print(names)
+print(data)
+print(max_use(data))
+print(average_use_per_kid(data))
+print(usage_variance_per_ride(data))
+print(no_use(data))
+print(more_than_25(data))
+print(heavy_user(data, names))
+print(least_popular_ride(data, rides))
+print(fix_last_kid(data))
+print(fix_wrong_minus(data))
+print(bad_luck_rides(data,rides))
+print(sort_users_descending(data, names))
